@@ -7,7 +7,7 @@ export function Index() {
 
     useEffect(() => {
         axios
-            .get("https://jsonplaceholder.typicode.com/posts")
+            .get("http://127.0.0.1:8000/api/posts")
             .then((response) => {
                 setPosts(response.data);
             })
