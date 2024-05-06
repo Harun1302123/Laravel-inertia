@@ -16,6 +16,26 @@ export function Index() {
             });
     }, []);
 
+    const handleDeletePost = async (postId) => {
+        const shouldDelete = window.confirm(
+            "Are you sure you want to delete this post?"
+        );
+
+        if (!shouldDelete) {
+            return;
+        }
+
+        try {
+            await axios.delete(`http://127.0.0.1:8000/api/posts/${postId}`);
+
+            setPosts((prevPosts) =>
+                prevPosts.filter((post) => post.id !== postId)
+            );
+        } catch (error) {
+            console.error("Error deleting post:", error);
+        }
+    };
+    
     return (
         <div>
             <div className="flex">
@@ -40,6 +60,23 @@ export function Index() {
                             <p className="font-bold">{post.author}</p>
 
                             <p>{post.body}</p>
+
+                            <div className="space-x-5 space-y-5">
+                                <Link
+                                    to={`posts/update/${post.id}`}
+                                    state={post}
+                                    className="px-4 py-2 text-white bg-purple-500 rounded-md hover:bg-purple-600"
+                                >
+                                    Edit Post
+                                </Link>
+
+                                <button 
+                                onClick={() => handleDeletePost(post.id)}
+                                className="px-4 py-2 text-white bg-gray-400 rounded-md hover:bg-gray-500">
+                                    Delete Post
+                                </button>
+                            </div>
+
                         </div>
                     ))}
         </div>
